@@ -5,7 +5,8 @@ using UnityEngine;
 public class Bird : MonoBehaviour
 {
     private bool isClick = false;
-    private SpringJoint2D sj;
+    [HideInInspector]
+    public SpringJoint2D sj;
     private Rigidbody2D rb;
 
     public Transform leftTransform;
@@ -13,6 +14,7 @@ public class Bird : MonoBehaviour
     public float MaxDistance = 2.2f;
     public LineRenderer left;
     public LineRenderer right;
+    public GameObject boom;
 
     private void Awake()
     {
@@ -61,6 +63,15 @@ public class Bird : MonoBehaviour
     private void Fly()
     {
         sj.enabled = false;
+        Invoke("Dead", 5f);
+    }
+
+    private void Dead()
+    {
+        GameManager.Instance.birds.Remove(this);
+        GameManager.Instance.NextBird();
+        Destroy(gameObject);
+        //Instantiate(boom, transform.position, Quaternion.identity);
     }
 
     private void DrawLine()
