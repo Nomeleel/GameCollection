@@ -10,6 +10,8 @@ public class Pig : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     public Sprite hurt;
     public GameObject boom;
+    public GameObject score;
+    public bool isPig = true;
 
     private void Awake()
     {
@@ -29,14 +31,19 @@ public class Pig : MonoBehaviour
         }
         else
         {
-
         }
     }
 
     private void Dead()
     {
+        if (isPig)
+        {
+            GameManager.Instance.pigs.Remove(this);
+        }
         Destroy(gameObject);
         Instantiate(boom, transform.position, Quaternion.identity);
+        GameObject tempScore = Instantiate(score, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
+        Destroy(tempScore, 2);
     }
 
 }
