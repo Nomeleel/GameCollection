@@ -58,12 +58,15 @@ public class Bird : MonoBehaviour
         isClick = false;
         rb.isKinematic = false;
         Invoke("Fly", 0.2f);
+
+        left.enabled = false;
+        right.enabled = false;
     }
 
     private void Fly()
     {
         sj.enabled = false;
-        Invoke("Dead", 5f);
+        Invoke("Dead", 3.5f);
     }
 
     private void Dead()
@@ -76,6 +79,9 @@ public class Bird : MonoBehaviour
 
     private void DrawLine()
     {
+        left.enabled = true;
+        right.enabled = true;
+
         left.SetPosition(0, leftTransform.position);
         left.SetPosition(1, transform.position);
 
