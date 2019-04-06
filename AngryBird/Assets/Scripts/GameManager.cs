@@ -7,14 +7,17 @@ public class GameManager : MonoBehaviour
     public List<Bird> birds;
     public List<Pig> pigs;
     public static GameManager Instance;
+    private Vector3 originPos;
 
-    public GameManager()
+    private void Awake()
     {
         Instance = this;
+        if (birds.Count > 0)
+        {
+            originPos = birds[0].transform.position;
+        }
     }
 
-
-    // Start is called before the first frame update
     void Start()
     {
         Init();
@@ -33,14 +36,25 @@ public class GameManager : MonoBehaviour
     {
         if (birds.Count > 0)
         {
-            birds[0].enabled = true;
-            birds[0].sj.enabled = true;
+            if (pigs.Count > 0)
+            {
+                birds[0].transform.position = originPos;
+                birds[0].enabled = true;
+                birds[0].sj.enabled = true;
+            }
+            else
+            {
+                // Nothing to do.
+            }
+        }
+        else
+        {
+            // Nothing to do.
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        // Nothing to do.
     }
 }
