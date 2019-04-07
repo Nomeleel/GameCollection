@@ -8,6 +8,7 @@ public class Bird : MonoBehaviour
     [HideInInspector]
     public SpringJoint2D sj;
     private Rigidbody2D rb;
+    private TestMyTrail trail;
 
     public Transform leftTransform;
     public Transform rightTransform;
@@ -20,6 +21,7 @@ public class Bird : MonoBehaviour
     {
         sj = GetComponent<SpringJoint2D>();
         rb = GetComponent<Rigidbody2D>();
+        trail = GetComponent<TestMyTrail>();
     }
 
     // Start is called before the first frame update
@@ -66,6 +68,7 @@ public class Bird : MonoBehaviour
     private void Fly()
     {
         sj.enabled = false;
+        trail.StartTrail();
         Invoke("Dead", 3.5f);
     }
 
@@ -73,6 +76,7 @@ public class Bird : MonoBehaviour
     {
         GameManager.Instance.birds.Remove(this);
         GameManager.Instance.NextBird();
+        trail.ClearTrail();
         Destroy(gameObject);
         //Instantiate(boom, transform.position, Quaternion.identity);
     }
@@ -87,6 +91,11 @@ public class Bird : MonoBehaviour
 
         right.SetPosition(0, rightTransform.position);
         right.SetPosition(1, transform.position);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        trail.ClearTrail();
     }
 
 }
