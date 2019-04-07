@@ -7,6 +7,9 @@ public class GameManager : MonoBehaviour
     public List<Bird> birds;
     public List<Pig> pigs;
     public static GameManager Instance;
+    public GameObject win;
+    public GameObject loser;
+
     private Vector3 originPos;
 
     private void Awake()
@@ -34,9 +37,9 @@ public class GameManager : MonoBehaviour
 
     public void NextBird()
     {
-        if (birds.Count > 0)
+        if (pigs.Count > 0)
         {
-            if (pigs.Count > 0)
+            if (birds.Count > 0)
             {
                 birds[0].transform.position = originPos;
                 birds[0].enabled = true;
@@ -44,12 +47,12 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                // Nothing to do.
+                loser.SetActive(true);
             }
         }
         else
         {
-            // Nothing to do.
+            win.SetActive(true);
         }
     }
 
