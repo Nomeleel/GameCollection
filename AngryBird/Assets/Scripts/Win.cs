@@ -6,9 +6,9 @@ public class Win : MonoBehaviour
 {
     public void ShowStart()
     {
-
+        GameManager.Instance.ShowStarts();
     }
-    
+
     // Start is called before the first frame update
     void Start()
     {
