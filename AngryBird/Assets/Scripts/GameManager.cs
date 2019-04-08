@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public GameObject win;
     public GameObject loser;
+    public List<GameObject> starts;
 
     private Vector3 originPos;
 
@@ -53,6 +54,20 @@ public class GameManager : MonoBehaviour
         else
         {
             win.SetActive(true);
+        }
+    }
+
+    public void ShowStarts()
+    {
+        StartCoroutine("Show");
+    }
+
+    IEnumerable Show()
+    {
+        for (int i = 0; i < starts.Count; i++)
+        {
+            yield return new WaitForSeconds(0.2f);
+            starts[i].SetActive(true);
         }
     }
 
