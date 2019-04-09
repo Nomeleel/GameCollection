@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -49,6 +50,8 @@ public class GameManager : MonoBehaviour
             else
             {
                 loser.SetActive(true);
+                //win.SetActive(true);
+                //ShowStarts();
             }
         }
         else
@@ -69,6 +72,16 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
             starts[i].SetActive(true);
         }
+    }
+
+    public void RePlay()
+    {
+        SceneManager.LoadScene(2);
+    }
+
+    public void GoHome()
+    {
+        SceneManager.LoadScene(1);
     }
 
     void Update()
