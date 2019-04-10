@@ -16,6 +16,7 @@ public class Bird : MonoBehaviour
     public LineRenderer left;
     public LineRenderer right;
     public GameObject boom;
+    public float smooth = 0.618f;
 
     private void Awake()
     {
@@ -47,6 +48,17 @@ public class Bird : MonoBehaviour
 
             DrawLine();
         }
+
+        CameraFollowUp();
+    }
+
+    private void CameraFollowUp()
+    {
+        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, 
+            new Vector3(Mathf.Clamp(transform.position.x, 0, 15),
+                Camera.main.transform.position.y,
+                Camera.main.transform.position.z),
+            smooth * Time.deltaTime);
     }
 
     private void OnMouseDown()
