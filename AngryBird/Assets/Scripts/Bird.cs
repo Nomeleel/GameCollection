@@ -9,6 +9,7 @@ public class Bird : MonoBehaviour
     public SpringJoint2D sj;
     private Rigidbody2D rb;
     private TestMyTrail trail;
+    private bool isCanMove;
 
     public Transform leftTransform;
     public Transform rightTransform;
@@ -17,12 +18,16 @@ public class Bird : MonoBehaviour
     public LineRenderer right;
     public GameObject boom;
     public float smooth = 0.618f;
+    public AudioClip birdSelectAudio;
+    public AudioClip birdFlyAudio;
+    public AudioClip birdCollisionAudio;
 
     private void Awake()
     {
         sj = GetComponent<SpringJoint2D>();
         rb = GetComponent<Rigidbody2D>();
         trail = GetComponent<TestMyTrail>();
+        isCanMove = true;
     }
 
     // Start is called before the first frame update
@@ -63,16 +68,21 @@ public class Bird : MonoBehaviour
 
     private void OnMouseDown()
     {
-        isClick = true;
-        rb.isKinematic = true;
+        if (isCanMove)
+        {
+            isClick = true;
+            rb.isKinematic = true;
+            PlayAudio(birdSelectAudio);
+        }
     }
 
     private void OnMouseUp()
     {
         isClick = false;
+        isCanMove = false;
         rb.isKinematic = false;
         Invoke("Fly", 0.2f);
-
+        PlayAudio(birdFlyAudio);
         left.enabled = false;
         right.enabled = false;
     }
@@ -108,6 +118,12 @@ public class Bird : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         trail.ClearTrail();
+        PlayAudio(birdCollisionAudio);
+    }
+
+    public void PlayAudio(AudioClip audioClip)
+    {
+        AudioSource.PlayClipAtPoint(audioClip, transform.position);
     }
 
 }

@@ -12,6 +12,8 @@ public class Pig : MonoBehaviour
     public GameObject boom;
     public GameObject score;
     public bool isPig = true;
+    public AudioClip collisionAudio;
+    public AudioClip deadAudio;
 
     private void Awake()
     {
@@ -24,10 +26,11 @@ public class Pig : MonoBehaviour
         if (collision.relativeVelocity.magnitude >= maxSpeed)
         {
             Dead();
-        } 
+        }
         else if (collision.relativeVelocity.magnitude < maxSpeed && collision.relativeVelocity.magnitude > minSpeed)
         {
             spriteRenderer.sprite = hurt;
+            PlayAudio(collisionAudio);  
         }
         else
         {
@@ -40,10 +43,16 @@ public class Pig : MonoBehaviour
         {
             GameManager.Instance.pigs.Remove(this);
         }
+        PlayAudio(deadAudio);
         Destroy(gameObject);
         Instantiate(boom, transform.position, Quaternion.identity);
         GameObject tempScore = Instantiate(score, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
         Destroy(tempScore, 2);
+    }
+
+    public void PlayAudio(AudioClip audioClip)
+    {
+        AudioSource.PlayClipAtPoint(audioClip, transform.position);
     }
 
 }
