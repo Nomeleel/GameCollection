@@ -6,11 +6,13 @@ public class Bird : MonoBehaviour
 {
     private bool isClick = false;
     [HideInInspector]
-    public SpringJoint2D sj;
-    private Rigidbody2D rb;
     private TestMyTrail trail;
     private bool isCanMove;
+    private bool canTriggerKill;
 
+    protected Rigidbody2D rb;
+
+    public SpringJoint2D sj;
     public Transform leftTransform;
     public Transform rightTransform;
     public float MaxDistance = 2.2f;
@@ -55,6 +57,21 @@ public class Bird : MonoBehaviour
         }
 
         CameraFollowUp();
+
+        ShowKillHandle();
+    }
+
+    private void ShowKillHandle()
+    {
+        if (canTriggerKill)
+        {
+            if (Input.GetMouseButton(0))
+            {
+                canTriggerKill = false;
+                ShowSkill();
+            }
+        }
+
     }
 
     private void CameraFollowUp()
@@ -89,6 +106,7 @@ public class Bird : MonoBehaviour
 
     private void Fly()
     {
+        canTriggerKill = true;
         sj.enabled = false;
         trail.StartTrail();
         Invoke("Dead", 3.5f);
@@ -124,6 +142,11 @@ public class Bird : MonoBehaviour
     public void PlayAudio(AudioClip audioClip)
     {
         AudioSource.PlayClipAtPoint(audioClip, transform.position);
+    }
+
+    protected virtual void ShowSkill()
+    {
+        
     }
 
 }
