@@ -19,7 +19,7 @@ public class Bird : MonoBehaviour
     public LineRenderer left;
     public LineRenderer right;
     public GameObject boom;
-    public float smooth = 0.618f;
+    public float smooth = 3.14f;
     public AudioClip birdSelectAudio;
     public AudioClip birdFlyAudio;
     public AudioClip birdCollisionAudio;

@@ -62,10 +62,10 @@ public class GameManager : MonoBehaviour
 
     public void ShowStarts()
     {
-        StartCoroutine("Show");
+        StartCoroutine(Show());
     }
 
-    IEnumerable Show()
+    IEnumerator Show()
     {
         for (int i = 0; i < starts.Count; i++)
         {
