@@ -1,14 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Bird : MonoBehaviour
 {
-    private bool isClick = false;
     [HideInInspector]
     private TestMyTrail trail;
     private bool isCanMove;
     private bool canTriggerKill;
+    private BirdStatus status;
 
     protected Rigidbody2D rb;
 
@@ -29,36 +30,54 @@ public class Bird : MonoBehaviour
         sj = GetComponent<SpringJoint2D>();
         rb = GetComponent<Rigidbody2D>();
         trail = GetComponent<TestMyTrail>();
-        isCanMove = true;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        isCanMove = true;
+        //status = BirdStatus.Heartbeat;
+    }
+
+    public void SetStatus(BirdStatus birdStatus)
+    {
+        status = birdStatus;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isClick)
+        switch (status)
         {
-            transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            transform.position += new Vector3(0, 0, -Camera.main.transform.position.z);
+            case BirdStatus.Drag:
+                {
+                    transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    transform.position += new Vector3(0, 0, -Camera.main.transform.position.z);
 
-            if (Vector3.Distance(transform.position, leftTransform.position) > MaxDistance)
-            {
-                Vector3 direction = (transform.position - leftTransform.position).normalized;
-                direction *= MaxDistance;
-                transform.position = direction + leftTransform.position;
-            }
-
-            DrawLine();
+                    if (Vector3.Distance(transform.position, leftTransform.position) > MaxDistance)
+                    {
+                        Vector3 direction = (transform.position - leftTransform.position).normalized;
+                        direction *= MaxDistance;
+                        transform.position = direction + leftTransform.position;
+                    }
+                    DrawLine();
+                    break;
+                }
+            case BirdStatus.Fly:
+                ShowKillHandle();
+                break;
         }
 
         CameraFollowUp();
 
-        ShowKillHandle();
+    }
+
+    private void FixedUpdate()
+    {
+        if (status == BirdStatus.Heartbeat)
+        {
+            Heartbeat();
+        }
     }
 
     private void ShowKillHandle()
@@ -87,7 +106,7 @@ public class Bird : MonoBehaviour
     {
         if (isCanMove)
         {
-            isClick = true;
+            status = BirdStatus.Drag;
             rb.isKinematic = true;
             PlayAudio(birdSelectAudio);
         }
@@ -95,7 +114,7 @@ public class Bird : MonoBehaviour
 
     private void OnMouseUp()
     {
-        isClick = false;
+        status = BirdStatus.Fly;
         isCanMove = false;
         rb.isKinematic = false;
         Invoke("Fly", 0.2f);
@@ -109,7 +128,24 @@ public class Bird : MonoBehaviour
         canTriggerKill = true;
         sj.enabled = false;
         trail.StartTrail();
-        Invoke("Dead", 3.5f);
+        Invoke("Dead", 4.5f);
+    }
+
+    public void Heartbeat()
+    {
+        StartCoroutine(HeartbeatHandle());
+    }
+
+    IEnumerator HeartbeatHandle()
+    {
+        //System.Random random = new System.Random();
+        //float time = random.Next(1, 2);
+        yield return new WaitForSeconds(1.7f);
+        if (transform.position.y <= -2.85f)
+        {
+            transform.position += new Vector3(0, 0.5f, 0);
+        }
+        yield return new WaitForSeconds(5.7f);
     }
 
     private void Dead()
@@ -118,7 +154,7 @@ public class Bird : MonoBehaviour
         GameManager.Instance.NextBird();
         trail.ClearTrail();
         Destroy(gameObject);
-        //Instantiate(boom, transform.position, Quaternion.identity);
+        Instantiate(boom, transform.position, Quaternion.identity);
     }
 
     private void DrawLine()
@@ -149,4 +185,14 @@ public class Bird : MonoBehaviour
         
     }
 
+}
+
+public enum BirdStatus
+{
+    Heartbeat,
+    Select,
+    Drag,
+    Fly,
+    Skil,
+    Dead
 }

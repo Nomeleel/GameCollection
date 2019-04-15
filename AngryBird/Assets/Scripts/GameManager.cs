@@ -32,8 +32,9 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < birds.Count; i++)
         {
-            birds[i].enabled = (i == 0 ? true : false);
+            //birds[i].enabled = (i == 0 ? true : false);
             birds[i].sj.enabled = (i == 0 ? true : false);
+            birds[i].SetStatus(i == 0 ? BirdStatus.Select : BirdStatus.Heartbeat);
         }
     }
 
@@ -44,14 +45,13 @@ public class GameManager : MonoBehaviour
             if (birds.Count > 0)
             {
                 birds[0].transform.position = originPos;
-                birds[0].enabled = true;
+                //birds[0].enabled = true;
                 birds[0].sj.enabled = true;
+                birds[0].SetStatus(BirdStatus.Select);
             }
             else
             {
                 loser.SetActive(true);
-                //win.SetActive(true);
-                //ShowStarts();
             }
         }
         else
