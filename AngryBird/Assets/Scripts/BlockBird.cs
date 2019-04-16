@@ -11,7 +11,6 @@ public class BlockBird : Bird
         if (collision.gameObject.GetComponent<Pig>() != null)
         {
             Objects.Add(collision.gameObject.GetComponent<Pig>());
-            print("----------------" + typeof(Pig) + "-----------------------");
         }
     }
 

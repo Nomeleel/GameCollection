@@ -72,14 +72,6 @@ public class Bird : MonoBehaviour
 
     }
 
-    private void FixedUpdate()
-    {
-        if (status == BirdStatus.Heartbeat)
-        {
-            Heartbeat();
-        }
-    }
-
     private void ShowKillHandle()
     {
         if (canTriggerKill)
@@ -133,7 +125,8 @@ public class Bird : MonoBehaviour
 
     public void Heartbeat()
     {
-        StartCoroutine(HeartbeatHandle());
+        //StartCoroutine(HeartbeatHandle());
+        //gameObject.AddComponent<Animator>();
     }
 
     IEnumerator HeartbeatHandle()
