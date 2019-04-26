@@ -18,17 +18,17 @@ namespace JungleWarClient
             string msgStr = Encoding.UTF8.GetString(msgFromServer, 0, length);
 
             Console.WriteLine(msgStr);
-            
-            //while (true)
-            //{
-            //    string data = Console.ReadLine();
-            //    if (data == "exit")
-            //    {
-            //        clientSocket.Close();
-            //        return;
-            //    }
-            //    clientSocket.Send(Encoding.UTF8.GetBytes(data));
-            //}
+
+            while (true)
+            {
+                string data = Console.ReadLine();
+                if (data == "exit")
+                {
+                    clientSocket.Close();
+                    return;
+                }
+                clientSocket.Send(Encoding.UTF8.GetBytes(data));
+            }
         }
     }
 }
